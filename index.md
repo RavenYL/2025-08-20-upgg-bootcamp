@@ -338,9 +338,11 @@ We will use this <a href="{{ page.collaborative_notes }}">collaborative document
 {% comment %}
 SURVEYS - DO NOT EDIT SURVEY LINKS
 {% endcomment %}
-<h2 id="surveys">Surveys</h2>
-<p>Please be sure to complete the survey <b>after each</b> lesson <b>and</b> the overall bootcamp.</p>
-<p><a href="https://duke.qualtrics.com/jfe/form/SV_29VNQ907x1w61Jc">Bootcamp Survey</a></p>
+<h2 id="surveys">Post-Surveys</h2>
+<p>Please be sure to complete the student instructors' post-survey <b>after each</b> lesson <b>and</b> the overall bootcamp.</p>
+<p><a href="https://duke.qualtrics.com/jfe/form/SV_29VNQ907x1w61Jc">Student Instructors' Post-Survey</a></p>
+<p>Please be sure to also complete OBGE's post-survey once after the overall bootcamp.</p>
+<p><a href="https://duke.qualtrics.com/jfe/form/SV_byF3YScaASaNesK">OBGE's Post-Survey</a></p>
 <hr/>
 
 
