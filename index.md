@@ -151,7 +151,7 @@ address.
   Get directions to
   <a href="https://maps.app.goo.gl/616Q8Jr6fajpaX4X7">GSRB1</a>
   and
-  <a href="https://maps.app.goo.gl/5SeZpKG8MuPHx4Ae9">MSRB III</a>.
+  <a href="https://maps.app.goo.gl/5SeZpKG8MuPHx4Ae9">MSRB3</a>.
 </p>
 {% elsif online == "true_public" %}
 <p id="where">
