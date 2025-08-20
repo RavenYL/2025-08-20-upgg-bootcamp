@@ -326,7 +326,7 @@ e.g., '2015-06-10-esu'.
 Note we also have a CodiMD (the open-source version of HackMD)
 available at https://codimd.carpentries.org
 {% endcomment %}
-{% if page.collaborative_notes %}
+{% if page.collaborative_notes_day1 %}
 <h2 id="collaborative_notes">Collaborative Notes</h2>
 
 <p>
