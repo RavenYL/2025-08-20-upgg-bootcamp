@@ -17,7 +17,7 @@ enddate: 2025-08-22        # machine-readable end date for the workshop in YYYY-
 instructor: ["Max Bucklan", "Erick Figueroa Ildefonso", "Kayla Wilhoit", "Natalie Dzikowski", "Odmaa Bayaraa", "Yanting \"Raven\" Luo-LeBlanc"] # boxed, comma-separated list of instructors' names as strings, like ["Kay McNulty", "Betty Jennings", "Betty Snyder"]
 helper: ["(same as instructors)"]     # boxed, comma-separated list of helpers' names, like ["Marlyn Wescoff", "Fran Bilas", "Ruth Lichterman"]
 email: ["amanda.shipp@duke.edu", "allison.ashleykoch@duke.edu", "yl726@duke.edu"]    # boxed, comma-separated list of contact email addresses for the host, lead instructor, or whoever else is handling questions, like ["marlyn.wescoff@example.org", "fran.bilas@example.org", "ruth.lichterman@example.org"]
-collaborative_notes_day1: https://hackmd.io/@lAfsOFOgTZeQbJzp_5LIsA/Syvqy8sSee/edit # optional: URL for the workshop collaborative notes, e.g. an Etherpad or Google Docs document (e.g., https://pad.carpentries.org/2015-01-01-euphoria)
+collaborative_notes: https://hackmd.io/@lAfsOFOgTZeQbJzp_5LIsA/Syvqy8sSee/edit # optional: URL for the workshop collaborative notes, e.g. an Etherpad or Google Docs document (e.g., https://pad.carpentries.org/2015-01-01-euphoria)
 collaborative_notes_day2: https://hackmd.io/@lAfsOFOgTZeQbJzp_5LIsA/H1uSCdQFle/edit # optional: URL for the workshop collaborative notes, e.g. an Etherpad or Google Docs document (e.g., https://pad.carpentries.org/2015-01-01-euphoria)
 eventbrite:           # optional: alphanumeric key for Eventbrite registration, e.g., "1234567890AB" (if Eventbrite is being used)
 ---
@@ -326,11 +326,11 @@ e.g., '2015-06-10-esu'.
 Note we also have a CodiMD (the open-source version of HackMD)
 available at https://codimd.carpentries.org
 {% endcomment %}
-{% if page.collaborative_notes_day1 %}
+{% if page.collaborative_notes %}
 <h2 id="collaborative_notes">Collaborative Notes</h2>
 
 <p>
-We will use these collaborative documents for chatting, taking notes, and sharing URLs and bits of code: <a href="{{ page.collaborative_notes_day1 }}">Day 1</a>, <a href="{{ page.collaborative_notes_day2 }}">Day 2</a>
+We will use these collaborative documents for chatting, taking notes, and sharing URLs and bits of code: <a href="{{ page.collaborative_notes }}">Day 1</a>, <a href="{{ page.collaborative_notes_day2 }}">Day 2</a>
 </p>
 <hr/>
 {% endif %}
