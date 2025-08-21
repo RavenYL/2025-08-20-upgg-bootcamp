@@ -1,0 +1,539 @@
+---
+title: "Data Visualization - Fillable Ver."
+author: "Kayla Wilhoit"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+## Day 2 Afternoon - Data Visualization
+
+#### Instructors: Kayla Wilhoit & Odmaa Bayaraa
+
+### Starting Out
+
+Let's use the penguins dataset to practice ggplot syntax!
+
+This is a commonly used example dataset that contains morphological information about Antarctic penguins.
+
+There are 3 different species of penguins in this dataset, collected from 3 islands in the Palmer Archipelago, Antarctica.
+
+To use the dataset, we need to install the package `palmerpenguins`
+
+```{r, message = FALSE, warning = FALSE}
+
+```
+
+Since this is a prepackaged dataset, lets assign the data to our own named data frame so we can see it in our environment.
+
+```{r}
+
+```
+
+We have several columns to work with here: The penguin species, island of collection, bill measurements, flipper length, body mass, sex, and date.
+
+You can read more about the variables by typing `?penguins`.
+
+You will notice that some rows have NA values - this won't affect our practice plotting other than giving us some warnings, but this is why data cleanup is so important before every project!\
+\
+Lets just quickly remove the rows with NA values. If you would like, try applying what you learned this morning to clean up this dataset on your own time.
+
+For the simple plots we are making today, the current long formatted data structure will work fine. If you are making more complicated and intensive plots in
+
+We will be using ggplot to make these figures. ggplot is included in the package tidyverse, which we should already have installed.
+
+```{r, message = FALSE, warning = FALSE}
+
+```
+
+```{r}
+
+```
+
+### Layer 1 - Data
+
+Remember - ggplot works in layers!
+
+We start with calling ggplot as a function with parenthesis.
+
+The first layer is the data - this gives us an empty canvas to build onto. In this case, we specify our penguins dataset within the parenthesis using `data = penguins`
+
+*Note: You can omit the `data =` part and just call a data frame like `ggplot(penguin_data)`, but it is always good to clearly specify what your code is doing!*
+
+```{r}
+
+```
+
+The data loaded correctly, and now we have a blank canvas to work with.
+
+### Layer 2 - Aesthetics = Mapping
+
+In ggplot, 'aesthetics' refers to the mapping of columns of our dataset onto aesthetic attributes of our plot.
+
+In this case, the attributes we want to specify are the x and y coordinates of the plot.
+
+Use the `aes()` function to map the x coordinate to the `species` column in our penguins dataset.
+
+```{r}
+
+```
+
+Now we can see that our species have appeared on the x-axis of our canvas!
+
+However, there still isn't any data shown. We need to specify a **geometry** that gives our data a shape to display
+
+### Layer 3 - Geometries
+
+Like an oil painting, we are building in layers on top of what we have already done.
+
+In ggplot, we use the + operator after the `ggplot()` call to tell R that the following layer is part of the plot.
+
+Lets start with a basic **bar plot** with height corresponding to the count of the data values, which in ggplot is called using the function `geom_bar()`
+
+We use the plus sign to add a new line that is automatically indented for us, and call the `geom_bar()` function. We don't need to add anything within the parentheses yet.
+
+```{r}
+
+```
+
+You will notice that even though we didn't specify a y-axis variable, the `geom_bar` function automatically used the count of the values we specified in the x-axis call (number of occurrences within each species).
+
+*In the weeds: This is because `geom_bar` is performing a statistical transformation on our data frame (counting the number of values). If you want to manually specify a value for the y-axis, you should use the `geom_col` function, which leaves the data as-is.*
+
+#### Two variables
+
+Lets specify a variable to plot on the y-axis, in this case flipper length in millimeters:
+
+You can also try using the other columns (`bill_depth_mm, bill_length_mm, body_mass_g`) for the following plots, and see what else you can learn!
+
+```{r}
+
+```
+
+This allows us to use a bivariate visualization method like a **scatterplot**
+
+In ggplot syntax, a scatterplot is created by calling the function `geom_point()`
+
+```{r}
+
+```
+
+### Adding more - boxplots
+
+This plot is already informative! We can qualitatively guess that some species might tend to have longer flippers than the others.
+
+In order to help quantify this and make the plot more attractive looking, lets add on a box and whisker plot **on top** of our points already plotted. That's the power of working in layers - we can add new elements without messing up our already plotted data!
+
+```{r}
+
+```
+
+### Making things look nicer - transparency
+
+Woo! We have nice boxplots that clearly show where the means of our clusters are different.
+
+However, this plot still looks kind of ugly. Lets add some optional variables to make it nicer to look at and clearly display our data points behind the boxplots.
+
+We can do this by first adjusting the opacity of the boxplots. Opacity in programming languages is often specified using the value `alpha` . Lets adjust the opacity of our plot to be half opacity by adding `alpha = 0.5` to our main statement, inside of the aesthetic statement:
+
+```{r}
+
+```
+
+We can now see the points behind our boxplots!
+
+But something's going on - the opacity of both the points and the boxplots were affected, and we have this annoying 'alpha' thing in the legend.
+
+This is because we specified `alpha` in the `aes()` statement within the first line (the first layer!) - which affects the entire plot.
+
+If we want to only adjust one element of our plot at a time, we can **set** alpha to a specific value within one geom.
+
+Lets remove our previous addition and add a new `alpha` value to our `geom_boxplot`, without calling `aes():`
+
+*In the weeds: Why the legend? Remember - aesthetics = mapping! Adding alpha within the aesthetic statement will work, but ggplot will assume the alpha is something we got from the data, and therefore adds it to the legend. By setting alpha to a specific value outside of aes(), we tell ggplot that alpha doesn't have anything to do with the data.*
+
+```{r}
+
+```
+
+Woohoo! Now our points are nice and dark behind our translucent boxplots.
+
+However, they are all smushed up against each other in a straight line, and it can be hard to see how the distribution of the points works.
+
+We can add some random horizontal spacing and noise to this by adding what is called **jitter**.
+
+*Note: This is just random noise, and does not represent properties of the original data! Use jitter judiciously.*
+
+Since it doesn't make sense to add jitter to a boxplot, lets just add it to our `geom_point` function.
+
+ggplot includes two ways to do this: setting the `position` value like we set the `alpha` value by adding `position = "jitter"`, or replacing the `geom_point` function with a `geom_jitter` function.
+
+```{r}
+
+```
+
+Lets also try replacing geom_point with geom_jitter:
+
+```{r}
+
+```
+
+You can see that this gives essentially the same result, although the random noise means the exact position of the points will be different.
+
+*Note: The spread of the jittered points can look pretty chaotic! If you want to make a very pretty publication-worthy graph while avoiding overplotting, consider installing the package `ggbeeswarm` to make a nicely shaped spread of points.*
+
+### Three variables - Color
+
+We have a lot of variables in our dataset, some of which may be correlated with each other. Lets see if there is any association between a penguins flipper length and its sex by coloring our points!
+
+Color is an aesthetic! Lets add a new `aes()` function with a `color` variable to our `geom_point` layer, and specify the `sex` column in our dataset:
+
+```{r}
+
+```
+
+Wow! It looks qualitatively like male penguins might have slightly longer flippers than female penguins.
+
+To quantitate this, lets split our boxplots up by sex as well:
+
+```{r}
+
+```
+
+Very cool - it looks like our groups are separated nicely!
+
+We will get into more details on color and color palettes later, but for now lets keep making this plot better.
+
+### Grouping and dodging
+
+If you want to separate out the points so that they go under their boxplots again instead of jittering them, we can use a `position_dodge` in combination with `group`
+
+`position_dodge` adjusts the horizontal position of the data by using a grouping variable. In this case, we will set our grouping variable to also be sex, and add our `position_dodge` statement to the geom with a width of 0.75.
+
+*Note: position_dodge - like jitter and alpha - is not an aesthetic and goes outside of the aes parenthesis but within the geom parenthesis.*
+
+*In the weeds: You will notice that a position_dodge with a width of 0.75 aligns suspiciously perfectly with our boxplots. This is because boxplots are actually already using position_dodge by default when you add another variable like color!*
+
+```{r}
+
+```
+
+We have lost our jitter, but no fear - we can add it back!
+
+To add it back while retaining the grouping, we can simultaneously dodge and jitter by using `position_jitterdodge` and changing `width` to `dodge.width`
+
+```{r}
+
+```
+
+This plot is looking pretty great!
+
+### Titles and labels
+
+Lets add some necessary information to this plot to take it closer to being publication-worthy.
+
+There are multiple ways to add labels and titles to a plot, but lets use a simple one - the `labs()` function. This function controls the labels for data, axes, and the plot itself. Each variable within labs can be passed a string specifying our title, but you can also automate titles using R variables!
+
+Remember to add a plus sign when adding a new layer!
+
+```{r}
+
+```
+
+We can also edit the axis labels to change the automatic names from the data into something nicer to look at:
+
+```{r}
+
+```
+
+### Themes
+
+If you want to get rid of that default grey background, you need to change the **theme**.
+
+Themes in ggplot govern all the **elements** of the plot - the text font and size, the background color, axis ticks, gridlines - every little detail. They can get very complex and you can create your own custom themes, but a good alternative to the default is `theme_bw()`, which changes the background to white and adds a nice dark border around the plot.
+
+*Note: You can also edit the legend by adding a legend() function, which can again be very detailed!*
+
+```{r}
+
+```
+
+Much better!
+
+### Color palettes
+
+ggplot comes with a pretty nice set of default colors, but they can be a little repetitive. In addition, many of the default colors are unfortunately not colorblind-friendly.
+
+There are many, many ways to color your plots, but the simplest option is to manually set your colors using the `scale_color_manual` function.
+
+This function allows you to map colors directly to your data, which works well when you only have a few variables. Since we have two options for our variable we are coloring by, we can give it two color values. R also knows the names of most basic colors, so you don't even need to know any fancy hex or RGB codes!
+
+```{r}
+
+```
+
+In addition to manually setting colors, we can use pre-made color palettes. You can always copy the hex codes into scale_color_manual, but there are many palettes built into R packages!
+
+A great place to start is <https://r-graph-gallery.com/color-palette-finder>, where you can preview a bunch of popular palettes from the package **paletteer**
+
+Pick one and import the package below!
+
+```{r}
+
+```
+
+A personal favorite of mine for discrete data points is Darjeeling1 from the wesanderson package. This package has palettes based on multiple Wes Anderson movies, so I will import that for this example.
+
+```{r}
+
+```
+
+We can access the hex codes directly in the vector we just created, or we could use a scale_color\_ function.
+
+Scales are complicated, but in this case we are using a paletteer-specific scales function for discrete (not continuous) colors from the wesanderson package, and specifying the reverse direction.
+
+```{r}
+
+```
+
+Amazing! We now have a very nice plot, suitable for most presentations.
+
+*Note: Darjeeling1 and other palettes are pretty and nice for adding color to discrete, labeled data, but still don't have perfect variability between colors for colorblind-friendliness or greyscale. If your color is important and directly related to the data such as in a heatmap, options such as the **viridis** package have carefully selected palettes that are very useful for continuous datasets.*
+
+### Checking significance
+
+From all of our plots, it looks like the Gentoo penguins have longer flippers than the Adelie or Chinstrap penguins. Is this statistically significant?
+
+We can do a quick check by using a new package called **ggpubr.** This package has lots of small tools to help make your plots publication-ready, but the most commonly used is a function to quickly compare and plot the means of groups in a plot.
+
+We can do this by adding another layer to our plot that this library supplies, `stat_compare_means()`. You can just call this by itself if you have a simple plot, but lets add information to make sure we use a t-test, show the significance as asterisks, and compare all three of our groups to each other.
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+Amazing! Since we have so many data points, all of our comparisons are very significant, and even the two similar species are different from each other.
+
+*Note: Be careful using these "pre-made" statistical tests! `stat_compare_means` is useful to do quick visualizations like this, but its always a good idea to independently perform statistical tests yourself outside of the ggplot/R framework to make sure your data is actually significant, and not a result of a coding typo or plotting quirk.*
+
+*Note 2: Another alternative to ggpubr is the package **ggsignif**, which works similarly but has a few different functionalities.*
+
+### Faceting
+
+It looks like male penguins have longer flippers than female penguins. Does this hold true within each species? Lets check significance again, but this time we will split up the species so we can check male vs. female trends independently for each species.
+
+We can do this through **faceting.** Faceting is an incredibly powerful tool in ggplot! It essentially splits your plot into smaller subplots or "facets" based on some aspect of your data. In this case, we can split up our data based on the species column into three separate plots so we can more clearly show our statistical comparison.
+
+We will use the function `facet_wrap()`, which takes a set of variables to facet by. We are only specifying one variable, so we give it `vars(species)` . In order for this to work, we need to change our x-axis call in the first line of our ggplot to be "sex" instead of "species", since we are now faceting by species instead.
+
+```{r}
+
+```
+
+Very nice! We now have three windows or facets for our data. Lets now add our `stat_compare_means` line from before, but comparing female vs male instead of species:
+
+```{r}
+
+```
+
+Great! We are now doing separate comparisons for each species, and they all happen to be significant!
+
+*Note: Why "wrap"? All the facet functions split your data into facets, but they display it differently. `facet_wrap` will wrap your data into more rows if needed to fit your screen, or stretch it out if you have plenty of space. If you want a specific layout, `facet_grid` lets you specify how many rows and columns you want your plots to fill.*
+
+*In the weeds: You may be familiar with a different way to specify facets using a tilde (\~). Facets can be given using a formula, and the most basic formula with only one variable would be `~species` . Facets can also be given a character vector, like `c("species")`. These different methods can be useful for more complex faceting arrangements, so look further into them if your data gets complex.*
+
+### Patchwork - Putting plots together
+
+So far, we have only been looking at one morphological measurement from our dataset - flipper length. Do the patterns we have seen so far hold true for all the other measurements as well?
+
+Because of how modular and flexible ggplot is, its extremely easy to switch the data out between plots. All we need to do is change the `flipper_length_mm` variable to something else in the first line of our plot.
+
+We could just make four new code blocks and four new plots, but it might be nice to look at them all together in one plot. We can use the package **patchwork** to help do this!
+
+patchwork is a library that can quickly and easily help you display multiple plots and format the layout. It's another extremely powerful tool with lots of functions, but it also has a very simple way to start!
+
+```{r}
+
+```
+
+To use patchwork, we need to save multiple plots in memory instead of showing it right away. We can do this by assigning our whole ggplot statement to a variable, just like you would a data frame or vector.
+
+Lets plot every numerical column in our data and save them into variables, and lets remove the labels for now to make the result a little less crowded:
+
+```{r}
+
+```
+
+You'll notice the plots didn't display after the code block. No worries, the plots were created, but are stored in a variable now. You should see the named variables in your environment, probably as "lists".
+
+To make sure the plot is there, we can just call it in a new code block and the plot will display:
+
+```{r}
+
+```
+
+Now to have fun with patchwork - you can simply add one plot to another and patchwork will automatically put them together!
+
+```{r}
+
+```
+
+You can do some fancy formatting with just the plot variables to get some fun layouts in a very intuitive way:
+
+```{r}
+
+```
+
+If the plot looks sad and squished, click the little "show in new window" button at the upper right of the plot to expand it!
+
+### Saving plots to a file
+
+There are several ways to save a plot to a file, but a simple way is to save the plot to a variable as before and then use the `ggsave()` function.
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+Note that the plot will save in your current working directory, and the dimensions may not be ideal!
+
+You can specify the dimensions within the ggsave statement:
+
+```{r}
+
+```
+
+Yay! We now have our plot in a file and ready to be slapped into a presentation!
+
+### Cheating :)
+
+Congrats! You just learned a lot of very specific, highly detailed plotting techniques! Now, what happens in a few months at the end of your first rotation, after you have forgotten everything from this bootcamp, when you suddenly need to plot your data for your final presentation? Don't worry, even people who use R every day are constantly forgetting details and specific functions, and there are several tools that can help you! It's not cheating, its time management :)
+
+Two great options for quickly looking at your data or giving you a starting plot template are **ggraptR** and **esquisse.** Both of these tools provide an interactive interface where you can move your data around and create/tweak basic graphs, and then provide you the exact code to create that graph in ggplot! ggraptR may not be working with the most recent versions of R, so lets try esquisse:
+
+```{r}
+
+```
+
+We pass our data frame to the function `esquisser` and a window should open with an interface.
+
+```{r}
+
+```
+
+To re-create the bare bones of our plot. drag the "species" variable to the X box, "flipper_length_mm" to the Y box, and "sex" to the color box. Ignore any error popups, and select a jitter plot from the upper left button. Then click on the "geom #2" tab, and select a boxplot from the upper left button. You can also manually edit the labels using the "Labels and Title" tab along the bottom. Finally, click the "Code" tab on the lower right, and you can copy the basic code to display that plot!
+
+I hope this short tutorial has been helpful to show you some of the things you can accomplish with ggplot in R. Happy plotting!
+
+## Dataset Plotting
+
+Import our data from this morning:
+
+```{r}
+
+```
+
+#### Plot NOP16 data
+
+```{r}
+
+```
+
+#### Line plot
+
+```{r}
+
+```
+
+#### Three gene plot
+
+### Heatmaps!
+
+To make a heatmap with ggplot, we use the `geom_tile()` function. This is a 2d structure like a barplot, so the coloring variable is `fill` instead of `color`.
+
+```{r}
+
+```
+
+#### Continuous color scales
+
+```{r}
+
+```
+
+#### Changing the theme
+
+```{r}
+
+```
+
+#### Making it interactive!
+
+The package **plotly** provides a great way to make your plots interactive. For our heatmap, this means you can mouse over the cells in the plot to display a tooltip with the exact values, providing both visual and quantitative information in a neat package!
+
+Lets install one last package and try it out:
+
+```{r}
+
+```
+
+To use the tooltip, we need to specify a column with the text to display. We can include a lot of information in the tooltip, but in this case lets display the name of the gene, the vol_fl, and the log2 ratio number.
+
+We can do this by making a new column using the `mutate()` function from tidyverse!
+
+```{r}
+
+```
+
+The formatting here is a little unusual in order to make it look pretty, but tooltips can be very simple.
+
+Lets try making our plot, this time specifying a new mapping inside the `aes()` statement for a `text` variable:
+
+```{r}
+
+```
+
+It probably doesn't look any different, but now we can add the `ggplotly()` package wrapper after we save the plot into a new plotting variable:
+
+```{r}
+
+```
+
+Incredible!
+
+This interactivity should even work as a knit html document, lets try it out!
+
+### Optional - Add a gene tree to the left of the plot
+
+In order to recreate the figure from the paper, we can add a gene tree to the left of our heatmap 
+
+```{r}
+
+```
+
+### Using Patchwork to combine the treeplot with the heatmap
+
+```{r}
+
+```
+Looks nice! Patchwork doesn't always work this smoothly, but the plots line up very well. However, you can notice that our NOP genes are not ordered quite right in the heatmap relative to the tree. There are multiple ways to fix this, including rotating the NOP tree tips around the node, but let's assume we don't want to change the tree. Instead, lets manually specify an order for the Gene factor in our data frame:
+
+```{r}
+
+```
+Now let's plot the heatmap again:
+
+```{r}
+
+```
+The heatmap rows are in the right sequence, but the order is reversed for some reason (because geom_tile is an annoying way to make a heatmap). We could go back and change the order of the factor, but a simpler way is just to reverse the order of the y axis using the ggplot function `scale_y_discrete`:
+
+```{r}
+
+```
