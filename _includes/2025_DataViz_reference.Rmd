@@ -1,5 +1,5 @@
 ---
-title: "2024_Bootcamp_DataViz"
+title: "2025_Bootcamp_DataViz"
 author: "Kayla Wilhoit & Odmaa Bayaraa"
 date: "`r Sys.Date()`"
 output: html_document
@@ -730,4 +730,5 @@ Let's save the nice plot as a pdf to make a vector image that we can tweak in Ad
 pub_plot <- tree_plot2 | heatmap_plot2
 ggsave(pub_plot, filename = "tree_heatmap_plot.pdf", width = 10, height = 5)
 ```
+
 
